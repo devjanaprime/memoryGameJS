@@ -1,9 +1,15 @@
 // are we listing for user input?
 let listening = true;
 let selections = {
-    index: 0,
-    computer: [ 1, 2, 3 ],
+    computer: [ 1,2,3,2,3,1],
     user: []
+}
+
+// game only ends when the user makes an incorrect guess
+let endGame = () =>{
+    console.log( 'gameOver. correct guesses:', selections.user.length );
+    selections.computer = [];
+    selections.user = [];
 }
 
 // used to select a block
@@ -18,17 +24,28 @@ let selectBlock = ( num ) =>{
     }
     const selected = 'block' + num;
     if( listening ){
-        selections.user[selections.index] = num;
         console.log( 'checking:', selections.computer[ selections.index ], selections.user[ selections.index ] );
-        if( selections.computer[ selections.index ] === selections.user[ selections.index ] ){
+        if( selections.computer[ selections.index ] === num ){
+            selections.user.push( num );
             document.getElementById( selected ).classList.add( 'block-correct' );
+            selections.index++;
         }
         else{
             document.getElementById( selected ).classList.add( 'block-incorrect' );
+            endGame();
         }
-        selections.index++;
     }
     else{
         document.getElementById( selected ).classList.add( 'block-selected' );
     }
+} // end selectBlock
+
+let startListening = () => {
+    listening = true;
+    selections.index = 0;
+    selections.user = [];
 }
+
+let newSelection = () =>{
+    listening = false;
+} //end newSelections

@@ -10,7 +10,17 @@
     background-color: beige;
 }
 
-.block-selected{
+.block-correct{
     width: 27%;
     background-color: green;
+}
+
+.block-incorrect{
+    width: 27%;
+    background-color: red;
+}
+
+.block-selected{
+    width: 27%;
+    background-color: blue;
 }

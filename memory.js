@@ -1,11 +1,16 @@
 // are we listing for user input?
-let listening = true;
+let listening = false;
 let selections = {
     computer: [],
+    index: 0,
     user: []
 }
 
+let showTime = 800;
+let hideTime = 200;
+
 let deselectAll = () => {
+    console.log( 'in deselectAll' );
     // deselect all 3 blocks
     for( let i=1; i<=3; i++){
         const block = 'block' + i;
@@ -28,11 +33,17 @@ let selectBlock = ( num ) =>{
     deselectAll();
     const selected = 'block' + num;
     if( listening ){
-        console.log( 'checking:', selections.computer[ selections.index ], selections.user[ selections.index ] );
+        console.log( 'checking:', selections.computer[ selections.index ], num );
         if( selections.computer[ selections.index ] === num ){
             selections.user.push( num );
             document.getElementById( selected ).classList.add( 'block-correct' );
-            selections.index++;
+            if( selections.index < selections.computer.length - 1 ){
+                selections.index++;
+            }
+            else{
+                console.log( 'nice... next...' );
+                setTimeout( setupNewSelections, showTime );
+            }
         }
         else{
             document.getElementById( selected ).classList.add( 'block-incorrect' );
@@ -40,9 +51,17 @@ let selectBlock = ( num ) =>{
         }
     }
     else{
+        console.log( 'user selection' );
         document.getElementById( selected ).classList.add( 'block-selected' );
     }
 } // end selectBlock
+
+let setupNewSelections = () =>{
+    deselectAll();
+    newSelection();
+    selections.index = 0;
+    showSelections();
+}
 
 let startListening = () => {
     listening = true;
@@ -51,10 +70,12 @@ let startListening = () => {
 }
 
 let showSelections = () => {
+    console.log( 'in showSelections', selections.index < selections.computer.length)
     listening = false;
     if( selections.index < selections.computer.length ){
-        setTimeout( deselectAll, 1500);
-        setTimeout( showSelections, 2000);
+        console.log( 'showing comp selection:', selections.index );
+        setTimeout( showSelections, showTime + hideTime );
+        setTimeout( deselectAll, showTime );
         selectBlock( selections.computer[ selections.index ] );
         selections.index++;
     } //end repeat
@@ -68,3 +89,12 @@ let newSelection = () =>{
     listening = false;
     selections.computer.push( Math.floor(Math.random() * (3)) + 1);
 } //end newSelections
+
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    newSelection();
+    newSelection();
+    newSelection();
+    newSelection();
+    setupNewSelections();
+});

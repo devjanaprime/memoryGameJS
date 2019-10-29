@@ -1,8 +1,18 @@
 // are we listing for user input?
 let listening = true;
 let selections = {
-    computer: [ 1,2,3,2,3,1],
+    computer: [],
     user: []
+}
+
+let deselectAll = () => {
+    // deselect all 3 blocks
+    for( let i=1; i<=3; i++){
+        const block = 'block' + i;
+        document.getElementById( block ).classList.remove( 'block-selected' );
+        document.getElementById( block ).classList.remove( 'block-correct' );
+        document.getElementById( block ).classList.remove( 'block-incorrect' );
+    }
 }
 
 // game only ends when the user makes an incorrect guess
@@ -15,13 +25,7 @@ let endGame = () =>{
 // used to select a block
 let selectBlock = ( num ) =>{
     console.log( 'selecting block:', num );
-    // deselect all 3 blocks
-    for( let i=1; i<=3; i++){
-        const block = 'block' + i;
-        document.getElementById( block ).classList.remove( 'block-selected' );
-        document.getElementById( block ).classList.remove( 'block-correct' );
-        document.getElementById( block ).classList.remove( 'block-incorrect' );
-    }
+    deselectAll();
     const selected = 'block' + num;
     if( listening ){
         console.log( 'checking:', selections.computer[ selections.index ], selections.user[ selections.index ] );
@@ -46,6 +50,21 @@ let startListening = () => {
     selections.user = [];
 }
 
+let showSelections = () => {
+    listening = false;
+    if( selections.index < selections.computer.length ){
+        setTimeout( deselectAll, 1500);
+        setTimeout( showSelections, 2000);
+        selectBlock( selections.computer[ selections.index ] );
+        selections.index++;
+    } //end repeat
+    else{
+        deselectAll();
+        startListening();
+    }
+}
+
 let newSelection = () =>{
     listening = false;
+    selections.computer.push( Math.floor(Math.random() * (3)) + 1);
 } //end newSelections

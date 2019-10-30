@@ -12,7 +12,7 @@ let hideTime = 200;
 let deselectAll = () => {
     console.log( 'in deselectAll' );
     // deselect all 3 blocks
-    for( let i=1; i<=3; i++){
+    for( let i=1; i<=4; i++){
         const block = 'block' + i;
         document.getElementById( block ).classList.remove( 'block-selected' );
         document.getElementById( block ).classList.remove( 'block-correct' );
@@ -87,7 +87,7 @@ let showSelections = () => {
 
 let newSelection = () =>{
     listening = false;
-    selections.computer.push( Math.floor(Math.random() * (3)) + 1);
+    selections.computer.push( Math.floor(Math.random() * 4) + 1);
 } //end newSelections
 
 
